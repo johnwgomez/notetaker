@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // need a Path to db.json
-const dbPath = path.join(__dirname, 'db/db.json');
+const dbPath = path.join(__dirname, 'develop/db/db.json');
 
 // 3. HTML Routes
 // notes return to notes.html
@@ -53,7 +53,7 @@ app.post('/api/notes', (req, res) => {
             return res.status(500).json({ error: 'Unable to read notes data' });
         }
 
-        const notes = JSON.parse(data);
+        const notes = JSON.parse(data) || [];
         notes.push(newNote);
 
         fs.writeFile(dbPath, JSON.stringify(notes), (err) => {
@@ -75,7 +75,7 @@ app.delete('/api/notes/:id', (req, res) => {
             return res.status(500).json({ error: 'Unable to read notes data' });
         }
 
-        const notes = JSON.parse(data);
+        const notes = JSON.parse(data) || [];
         const newNotes = notes.filter(note => note.id !== id);
 
         fs.writeFile(dbPath, JSON.stringify(newNotes), (err) => {
