@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // need a Path to db.json
-const dbPath = path.join(__dirname, 'develop/db/db.json');
+const dbPath = path.join(__dirname, 'db/db.json');
 
 // 3. HTML Routes
 // notes return to notes.html
@@ -39,6 +39,7 @@ app.get('/api/notes', (req, res) => {
 
 // posting in a new note
 app.post('/api/notes', (req, res) => {
+    console.log('Received new note:', req.body); // Add this line for debugging
     const { title, text } = req.body;
     if (!title || !text) {
         return res.status(400).json({ error: 'Title and text are needed' });
@@ -46,8 +47,9 @@ app.post('/api/notes', (req, res) => {
 
     const newNote = { id: uuidv4(), title, text };
 
-    fs.readFile(path.join(__dirname, 'develop/db/db.json'), 'utf8', (err, data) => {
+    fs.readFile(dbPath, 'utf8', (err, data) => {
         if (err) {
+            console.error('Error reading notes:', err);
             return res.status(500).json({ error: 'Unable to read notes data' });
         }
 
@@ -86,7 +88,13 @@ app.delete('/api/notes/:id', (req, res) => {
     });
 });
 
+// Fallback Route to Serve index.html
+// This must be the last route
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
+// Start the Server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
