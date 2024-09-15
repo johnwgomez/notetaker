@@ -20,10 +20,7 @@ const dbPath = path.join(__dirname, 'develop/db/db.json');
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/notes.html'));
 });
-// get *return to index.html
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
-});
+
 // 4. API Routes needed (GET, POST, DELETE requests)
 
 // need to create a GET that reads into db.json
