@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // need a Path to db.json
-const dbPath = path.join(__dirname, 'develop/db/db.json');
+const dbPath = path.join(__dirname, 'db/db.json');
 
 // 3. HTML Routes
 // notes return to notes.html
