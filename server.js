@@ -15,6 +15,15 @@ app.use(express.static('public'));
 // need a Path to db.json
 const dbPath = path.join(__dirname, 'db/db.json');
 
+// Ensure the db directory and db.json file exist
+const dbDir = path.join(__dirname, 'db');
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir);
+}
+if (!fs.existsSync(dbPath)) {
+    fs.writeFileSync(dbPath, '[]', 'utf8');
+}
+
 // 3. HTML Routes
 // notes return to notes.html
 app.get('/notes', (req, res) => {
